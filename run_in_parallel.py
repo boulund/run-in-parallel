@@ -41,7 +41,8 @@ def parse_commandline():
             "as arguments to run_in_parallel.py (one file per Slurm job).")
     program_parser.add_argument("--stack", type=int, metavar="N",
         default=1,
-        help="Stack N calls on each node [%(default)s].")
+        help="Stack N calls on each node [%(default)s]. Remember to end your "+\
+            "command with '&' so the commands are run simultaneously.")
     program_parser.add_argument("query", nargs="+", metavar="FILE",
         default="",
         help="Query file(s).")

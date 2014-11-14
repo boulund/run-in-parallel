@@ -21,6 +21,11 @@ sequence_files reads1.fasta.blast8 reads2.fasta.blast8 reads3.fasta.blast8
 slurm-6132412.out slurm-6132413.out slurm-6132414.out 
 ```
 
+There is command line help available. Run without arguments, -h or --help to
+display the help text. Remember to set the -p and -A flags (Slurm partition and
+account) to whatever is relevant for your application. Always specify a
+reasonable wall clock time (-t), so that your job is allocated as soon as
+possible.
 
 ## Long instructions for use on C3SE Glenn ##
 
@@ -52,7 +57,7 @@ Submitted Slurm job for 'job3'
 ```
 
 ### Check the results ###
-Most of the times you probably write the results to some files somewhere. Here we just see the printout in the stdout from the nodes which are available in the call directory after job completion.
+Most of the time you probably write the results to some files somewhere. Here we just see the printout in the stdout from the nodes which are available in the call directory after job completion.
 ```
 #!bash
 $ cat slurm*.out 
