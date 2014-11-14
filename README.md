@@ -74,7 +74,7 @@ folder:
 ```
 #!bash
 $ hg clone https://bitbucket.org/chalmersmathbioinformatics/run_in_parallel
-$ ln -s ./run_in_parallel/run_in_parallel.py ~/bin
+$ ln -s ~/run_in_parallel/run_in_parallel.py ~/bin
 ```
 
 ### Run things in parallel! ###
