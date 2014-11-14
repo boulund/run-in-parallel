@@ -17,8 +17,8 @@ command lines in parallel on several nodes in a simple way.
  file1 and file2 simultaneously, and the second node only runs on file3. 
 
  * Run composite command on one node per file:
- ``` run_in_parallel.py --call 'cp ~/database.fasta $TMPDIR; cd $TMPDIR; heavy_processing {query} -out={query}.output; cp {query}.output ~/results' file1 file2 file3 ```. 
- This copies a big database to the $TMPDIR on each one, then changes dir to the
+ ``` run_in_parallel.py --call 'cp ~/database.fasta $TMPDIR; cd $TMPDIR; heavy_processing -input={query} -db=database.fasta -out={query}.output; cp {query}.output ~/results' file1 file2 file3 ```. 
+ This copies a big database to the $TMPDIR on each node, then changes dir to the
  $TMPDIR and runs heavy_processing in the $TMPDIR, then copies the results back
  to the user home dir.
 
