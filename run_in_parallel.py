@@ -39,6 +39,9 @@ def parse_commandline():
             "e.g. 'blat dbfile.fasta {query} -t=dnax q=prot {query}.blast8'. "+\
             "{query} is substituted for the filenames specified on "+\
             "as arguments to run_in_parallel.py (one file per Slurm job).")
+    program_parser.add_argument("--stack", type=int, metavar="N",
+        default=1,
+        help="Stack N calls on each node [%(default)s].")
     program_parser.add_argument("query", nargs="+", metavar="FILE",
         default="",
         help="Query file(s).")
@@ -52,23 +55,27 @@ def parse_commandline():
 
 
 
-def generate_sbatch_script(options, query_file):
-    """Generate sbatch script.
+def generate_sbatch_scripts(options):
+    """Generate sbatch scripts.
     """
 
-    sbatch_script = ["#!/usr/bin/env bash",
-        "#SBATCH -N {N}".format(N=options.N),
-        "#SBATCH -p {p}".format(p=options.p),
-        "#SBATCH -A {A}".format(A=options.A),
-        "#SBATCH -t {t}".format(t=options.t)]
+    while options.query:
+        query_files_in_script = []
+        sbatch_script = ["#!/usr/bin/env bash",
+            "#SBATCH -N {N}".format(N=options.N),
+            "#SBATCH -p {p}".format(p=options.p),
+            "#SBATCH -A {A}".format(A=options.A),
+            "#SBATCH -t {t}".format(t=options.t)]
+        if options.C:
+            sbatch_script.append("#SBATCH -C {C}".format(C=options.C))
+        
+        for query_file in options.query[0:options.stack]:
+            options.query.pop(0)
+            query_files_in_script.append(query_file)
+            call = options.call.format(query=query_file)
+            sbatch_script.append(call)
 
-    if options.C:
-        sbatch_script.append("#SBATCH -C {C}".format(C=options.C))
-
-    call = options.call.format(query=query_file)
-    sbatch_script.append("{call}".format(call=call))
-
-    return "\n".join(sbatch_script)
+        yield "\n".join(sbatch_script), query_files_in_script
 
 
 
@@ -85,7 +92,9 @@ def call_sbatch(sbatch_script):
 
 if __name__ == "__main__":
     options = parse_commandline()
-    for query_file in options.query:
-        sbatch_script = generate_sbatch_script(options, query_file)
+    for sbatch_script, query_files in generate_sbatch_scripts(options):
         call_sbatch(sbatch_script)
-        print "Submitted Slurm job for '{}'".format(query_file)
+        if len(query_files) > 1:
+            print "Submitted stacked Slurm job for {} files: '{}'".format(len(query_files), "', '".join(query_files))
+        else:
+            print "Submitted Slurm job for: '{}'".format(query_files[0])
