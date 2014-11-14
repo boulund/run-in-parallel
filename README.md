@@ -8,16 +8,16 @@ command lines in parallel on several nodes in a simple way.
 ## Overview of features ##
 
  * Run single command on one node per file:
- ``` run_in_parallel.py --call 'echo {query}' file1 file2 file3 ```
+ ``` run_in_parallel.py --call 'echo {query}' file1 file2 file3 ```. 
  This submits three batch jobs via Slurm.
 
  * Stack single command for N files per node:
- ``` run_in_parallel.py --call 'echo {query}&' --stack 2 file1 file2 file3 ```
+ ``` run_in_parallel.py --call 'echo {query}&' --stack 2 file1 file2 file3 ```. 
  This submits two batch jobs via slurm, where the first runs the command on
  file1 and file2 simultaneously. 
 
  * Run composite command on one node per file:
- ``` run_in_parallel.py --call 'cp ~/database.fasta $TMPDIR; cd $TMPDIR; heavy_processing {query} -out={query}.output; cp {query}.output ~/results' file1 file2 file3 ```
+ ``` run_in_parallel.py --call 'cp ~/database.fasta $TMPDIR; cd $TMPDIR; heavy_processing {query} -out={query}.output; cp {query}.output ~/results' file1 file2 file3 ```. 
  This copies a big database to the $TMPDIR on each one, then changes dir to the
  $TMPDIR and runs heavy_processing in the $TMPDIR, then copies the results back
  to the user home dir.
