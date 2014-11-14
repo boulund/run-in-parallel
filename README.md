@@ -7,20 +7,26 @@ command lines in parallel on several nodes in a simple way.
 
 ## Overview of features ##
 
- * Run single command on one node per file:
- ``` run_in_parallel.py --call 'echo {query}' file1 file2 file3 ```. 
- This submits three batch jobs via Slurm.
+### Run single command on one node per file ###
 
- * Stack single command for N files per node:
+ ``` run_in_parallel.py --call 'echo {query}' file1 file2 file3 ```. 
+
+This submits three batch jobs via Slurm.
+
+### Stack single command for N files per node ###
+
  ``` run_in_parallel.py --call 'echo {query}&' --stack 2 file1 file2 file3 ```. 
- This submits two batch jobs via Slurm, where the first runs the command on
+
+This submits two batch jobs via Slurm, where the first runs the command on
  file1 and file2 simultaneously, and the second node only runs on file3. 
 
- * Run composite command on one node per file:
+### Run composite command on one node per file ###
+
  ``` run_in_parallel.py --call 'cp ~/database.fasta $TMPDIR; cd $TMPDIR; heavy_processing -input={query} -db=database.fasta -out={query}.output; cp {query}.output ~/results' file1 file2 file3 ```. 
- This copies a big database to the $TMPDIR on each node, then changes dir to the
- $TMPDIR and runs heavy_processing in the $TMPDIR, then copies the results back
- to the user home dir.
+ 
+This copies a big database to the $TMPDIR on each node, then changes dir to the
+$TMPDIR and runs heavy_processing in the $TMPDIR, then copies the results back
+to the user home dir.
 
 Note that the script is stupid, makes a lot of assumptions and has no error
 correction---so make sure you spell the command correctly. Also note that this
