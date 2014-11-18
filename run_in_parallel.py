@@ -33,7 +33,7 @@ def parse_commandline():
         help="Specify node memory size [default let Slurm decide].")
 
     program_parser = parser.add_argument_group("PROGRAM", "Command to run in parallel.")
-    program_parser.add_argument("--call", 
+    program_parser.add_argument("--call", required=True,
         default="",
         help="Program and arguments in a single quoted string, "+\
             "e.g. 'blat dbfile.fasta {query} -t=dnax q=prot {query}.blast8'. "+\
