@@ -39,14 +39,15 @@ def parse_commandline():
     program_parser = parser.add_argument_group("PROGRAM", "Command to run in parallel.")
     program_parser.add_argument("--call", required=True,
         default="",
-        help="Program and arguments in a single quoted string, "+\
-            "e.g. 'blat dbfile.fasta {query} -t=dnax q=prot {query}.blast8'. "+\
-            "{query} is substituted for the filenames specified on "+\
-            "as arguments to run_in_parallel.py (one file per Slurm job).")
+        help="""Program and arguments in a single quoted string,
+                e.g. 'blat dbfile.fasta {query} -t=dnax q=prot {query}.blast8'.
+                {query} is substituted for the filenames specified on
+                as arguments to run_in_parallel.py (one file per Slurm job).""")
     program_parser.add_argument("--stack", type=int, metavar="N",
         default=1,
-        help="Stack N calls on each node [%(default)s]. Remember to end your "+\
-            "command with '&' so the commands are run simultaneously.")
+        help="""Stack N calls on each node. Remember to end your
+                command with '&' so the commands are run simultaneously 
+                [%(default)s].""")
     program_parser.add_argument("query", nargs="+", metavar="FILE",
         default="",
         help="Query file(s).")
