@@ -31,6 +31,10 @@ def parse_commandline():
     slurm.add_argument("-C", choices=["SMALLMEM", "BIGMEM", "HUGEMEM"],
         default="",
         help="Specify node memory size [default let Slurm decide].")
+    slurm.add_argument("-J", 
+        default="sbatch",
+        help="""Name for the job allocation, note that at most 8 characters are seen 
+                in the squeue listings [%(default)s].""")
 
     program_parser = parser.add_argument_group("PROGRAM", "Command to run in parallel.")
     program_parser.add_argument("--call", required=True,
@@ -66,7 +70,8 @@ def generate_sbatch_scripts(options):
             "#SBATCH -N {N}".format(N=options.N),
             "#SBATCH -p {p}".format(p=options.p),
             "#SBATCH -A {A}".format(A=options.A),
-            "#SBATCH -t {t}".format(t=options.t)]
+            "#SBATCH -t {t}".format(t=options.t),
+            "#SBATCH -J {J}".format(J=options.J)]
         if options.C:
             sbatch_script.append("#SBATCH -C {C}".format(C=options.C))
         
